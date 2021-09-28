@@ -19,13 +19,13 @@ st.set_page_config(
 def createDataFrame():
   # Fetch csv files
   df_elements = pd.read_csv('https://raw.githubusercontent.com/fivethirtyeight/data/master/bob-ross/elements-by-episode.csv')
-  df_paintings = pd.read_csv('https://raw.githubusercontent.com/jwilber/Bob_Ross_Paintings/master/data/bob_ross_paintings.csv', index_col=0)
+  df_paintings = pd.read_csv('https://raw.githubusercontent.com/jwilber/Bob_Ross_Paintings/master/data/bob_ross_paintings.csv')
 
   # Drop columns
-  df_paintings.drop(['img_src', 'colors', 'color_hex'], 1, inplace=True)
+  df_paintings.drop(['painting_index', 'img_src', 'youtube_src' , 'colors', 'color_hex', 'Unnamed: 0'], 1, inplace=True)
 
-  # Return clean dataframe
-  return df_paintings.join(df_elements[['APPLE_FRAME', 'AURORA_BOREALIS', 'BARN', 'BEACH', 'BOAT', 'BRIDGE', 'BUILDING', 'BUSHES', 'CABIN', 'CACTUS', 'CIRCLE_FRAME', 'CIRRUS', 'CLIFF', 'CLOUDS', 'CONIFER', 'CUMULUS', 'DECIDUOUS', 'DIANE_ANDRE', 'DOCK', 'DOUBLE_OVAL_FRAME', 'FARM', 'FENCE', 'FIRE', 'FLORIDA_FRAME', 'FLOWERS', 'FOG', 'FRAMED', 'GRASS', 'GUEST', 'HALF_CIRCLE_FRAME', 'HALF_OVAL_FRAME', 'HILLS', 'LAKE', 'LAKES', 'LIGHTHOUSE', 'MILL', 'MOON', 'MOUNTAIN', 'MOUNTAINS', 'NIGHT', 'OCEAN', 'OVAL_FRAME', 'PALM_TREES', 'PATH', 'PERSON', 'PORTRAIT', 'RECTANGLE_3D_FRAME', 'RECTANGULAR_FRAME', 'RIVER', 'ROCKS', 'SEASHELL_FRAME', 'SNOW', 'SNOWY_MOUNTAIN', 'SPLIT_FRAME', 'STEVE_ROSS', 'STRUCTURE', 'SUN', 'TOMB_FRAME', 'TREE', 'TREES', 'TRIPLE_FRAME', 'WATERFALL', 'WAVES', 'WINDMILL', 'WINDOW_FRAME', 'WINTER', 'WOOD_FRAMED'] ])
+  # Return dataframe with joined columns
+  return df_paintings.join(df_elements[['APPLE_FRAME', 'AURORA_BOREALIS', 'BARN', 'BEACH', 'BOAT', 'BRIDGE', 'BUILDING', 'BUSHES', 'CABIN', 'CACTUS', 'CIRCLE_FRAME', 'CIRRUS', 'CLIFF', 'CLOUDS', 'CONIFER', 'CUMULUS', 'DECIDUOUS', 'DIANE_ANDRE', 'DOCK', 'DOUBLE_OVAL_FRAME', 'FARM', 'FENCE', 'FIRE', 'FLORIDA_FRAME', 'FLOWERS', 'FOG', 'FRAMED', 'GRASS', 'GUEST', 'HALF_CIRCLE_FRAME', 'HALF_OVAL_FRAME', 'HILLS', 'LAKE', 'LAKES', 'LIGHTHOUSE', 'MILL', 'MOON', 'MOUNTAIN', 'MOUNTAINS', 'NIGHT', 'OCEAN', 'OVAL_FRAME', 'PALM_TREES', 'PATH', 'PERSON', 'PORTRAIT', 'RECTANGLE_3D_FRAME', 'RECTANGULAR_FRAME', 'RIVER', 'ROCKS', 'SEASHELL_FRAME', 'SNOW', 'SNOWY_MOUNTAIN', 'SPLIT_FRAME', 'STEVE_ROSS', 'STRUCTURE', 'SUN', 'TOMB_FRAME', 'TREE', 'TREES', 'TRIPLE_FRAME', 'WATERFALL', 'WAVES', 'WINDMILL', 'WINDOW_FRAME', 'WINTER', 'WOOD_FRAMED']])
 
 def getQuote():
   r = requests.get('https://api.bobross.dev/api').json()
@@ -43,11 +43,156 @@ st.caption("Datum: 1 oktober 2021")
 # st.markdown('> ' + getQuote() + '\n\r > *- Bob Ross*')
 
 st.markdown("""
-  ## Hoofdstuknaam 1
+  ## Inleiding
+  Bob Ross (1942 - 1995) was een Amerikaanse landschapschilder die in zijn televisieserie *The Joy of Painting* veel verschillende schilderijen heeft geschilderd. Deze schilderijen zullen in dit rapport geanalyseert worden op basis van de geschilderde objecten en gebruikte kleuren.
+
+  Om de schilderijen van Bob Ross te analyseren, zal er gebruik gemaakt worden van twee verschillende csv datasets.
+  - FiveThirtyEight heeft een [dataset](https://raw.githubusercontent.com/fivethirtyeight/data/master/bob-ross/elements-by-episode.csv) gepubliceert waarin per schilderij de objecten staan die zijn geschilderd. De nauwkeurigheid van deze dataset kan ter discussie staan. Er zijn meer dan 400 schilderijen die bekeken moesten worden voor de inhoud. Hier kunnen fouten zijn gemaakt en kan subjectief zijn beoordeeld. In dit rapport zal deze data letterlijk over genomen worden zonder verbeteringen.
+  - GitHub gebruiker *jwilber* heeft een [dataset](https://raw.githubusercontent.com/jwilber/Bob_Ross_Paintings/master/data/bob_ross_paintings.csv) gepubliceerd waarin per schilderij onder andere de afbeelding, youtube-link en alle gebruikte kleuren staan. De kwaliteit van deze data zal hoog liggen, aangezien de kleuren afkomstig zijn van *TwoInchBrush*, een organisatie die per schilderij de kleuren beschikbaar stelt.
+
+  De datasets bevatten de volgende kolommen:
+""")
+
+col1, col2 = st.columns(2)
+
+with col1:
+  st.markdown("""  
+    **FiveThirtyEights dataset**
+    - `EPISODE`
+    - `TITLE`
+    - `APPLE_FRAME`
+    - `AURORA_BOREALIS`
+    - `BARN`
+    - `BEACH`
+    - `BOAT`
+    - `BRIDGE`
+    - `BUILDING`
+    - `BUSHES`
+    - `CABIN`
+    - `CACTUS`
+    - `CIRCLE_FRAME`
+    - `CIRRUS`
+    - `CLIFF`
+    - `CLOUDS`
+    - `CONIFER`
+    - `CUMULUS`
+    - `DECIDUOUS`
+    - `DIANE_ANDRE`
+    - `DOCK`
+    - `DOUBLE_OVAL_FRAME`
+    - `FARM`
+    - `FENCE`
+    - `FIRE`
+    - `FLORIDA_FRAME`
+    - `FLOWERS`
+    - `FOG`
+    - `FRAMED`
+    - `GRASS`
+    - `GUEST`
+    - `HALF_CIRCLE_FRAME`
+    - `HALF_OVAL_FRAME`
+    - `HILLS`
+    - `LAKE`
+    - `LAKES`
+    - `LIGHTHOUSE`
+    - `MILL`
+    - `MOON`
+    - `MOUNTAIN`
+    - `MOUNTAINS`
+    - `NIGHT`
+    - `OCEAN`
+    - `OVAL_FRAME`
+    - `PALM_TREES`
+    - `PATH`
+    - `PERSON`
+    - `PORTRAIT`
+    - `RECTANGLE_3D_FRAME`
+    - `RECTANGULAR_FRAME`
+    - `RIVER`
+    - `ROCKS`
+    - `SEASHELL_FRAME`
+    - `SNOW`
+    - `SNOWY_MOUNTAIN`
+    - `SPLIT_FRAME`
+    - `STEVE_ROSS`
+    - `STRUCTURE`
+    - `SUN`
+    - `TOMB_FRAME`
+    - `TREE`
+    - `TREES`
+    - `TRIPLE_FRAME`
+    - `WATERFALL`
+    - `WAVES`
+    - `WINDMILL`
+    - `WINDOW_FRAME`
+    - `WINTER`
+    - `WOOD_FRAMED`
+
+    Uit deze datset zullen de kolommen `EPISODE` en `TITLE` niet gebruikt worden. De episode staat in de datset van jwilber in een beter formaat (seizoen en aflevering in een aparte kolom). Ook staat in zijn dataset de titel van de aflevering niet in hoofdletters.
+  """)
+
+with col2:
+  st.markdown("""  
+    **Jwilbers dataset**
+    - `painting_index`
+    - `img_src`
+    - `painting_title`
+    - `season`
+    - `episode`
+    - `num_colors`
+    - `youtube_src`
+    - `colors`
+    - `color_hex`
+    - `Black_Gesso`
+    - `Bright_Red`
+    - `Burnt_Umber`
+    - `Cadmium_Yellow`
+    - `Dark_Sienna`
+    - `Indian_Red`
+    - `Indian_Yellow`
+    - `Liquid_Black`
+    - `Liquid_Clear`
+    - `Midnight_Black`
+    - `Phthalo_Blue`
+    - `Phthalo_Green`
+    - `Prussian_Blue`
+    - `Sap_Green`
+    - `Titanium_White`
+    - `Van_Dyke_Brown`
+    - `Yellow_Ochre`
+    - `Alizarin_Crimson`
+
+    Uit deze datset zullen de kolommen `painting_index`, `img_src`, `youtube_src`, `colors` en `color_hex` niet gebruikt worden voor de analyse. De foto en video is lastig te analyseren en de (hex)kleuren zijn in de tabel al in aparte kolommen gegeven.
+  """)
+
+st.markdown("Bovenstaande datasets zijn samengevoegd (met uitzondering van de genoemde kolommen) tot de volgende dataframe:")
+
+st.dataframe(df)
+
+st.markdown("""
+  Deze dataframe is door middel van de volgende code tot stand gekomen:
+
+  ```python
+  def createDataFrame():
+    # Fetch csv files
+    df_elements = pd.read_csv('https://raw.githubusercontent.com/fivethirtyeight/data/master/bob-ross/elements-by-episode.csv')
+    df_paintings = pd.read_csv('https://raw.githubusercontent.com/jwilber/Bob_Ross_Paintings/master/data/bob_ross_paintings.csv')
+
+    # Drop columns
+    df_paintings.drop(['painting_index', 'img_src', 'youtube_src' , 'colors', 'color_hex', 'Unnamed: 0'], 1, inplace=True)
+
+    # Return dataframe with joined columns
+    return df_paintings.join(df_elements[['APPLE_FRAME', 'AURORA_BOREALIS', 'BARN', 'BEACH', 'BOAT', 'BRIDGE', 'BUILDING', 'BUSHES', 'CABIN', 'CACTUS', 'CIRCLE_FRAME', 'CIRRUS', 'CLIFF', 'CLOUDS', 'CONIFER', 'CUMULUS', 'DECIDUOUS', 'DIANE_ANDRE', 'DOCK', 'DOUBLE_OVAL_FRAME', 'FARM', 'FENCE', 'FIRE', 'FLORIDA_FRAME', 'FLOWERS', 'FOG', 'FRAMED', 'GRASS', 'GUEST', 'HALF_CIRCLE_FRAME', 'HALF_OVAL_FRAME', 'HILLS', 'LAKE', 'LAKES', 'LIGHTHOUSE', 'MILL', 'MOON', 'MOUNTAIN', 'MOUNTAINS', 'NIGHT', 'OCEAN', 'OVAL_FRAME', 'PALM_TREES', 'PATH', 'PERSON', 'PORTRAIT', 'RECTANGLE_3D_FRAME', 'RECTANGULAR_FRAME', 'RIVER', 'ROCKS', 'SEASHELL_FRAME', 'SNOW', 'SNOWY_MOUNTAIN', 'SPLIT_FRAME', 'STEVE_ROSS', 'STRUCTURE', 'SUN', 'TOMB_FRAME', 'TREE', 'TREES', 'TRIPLE_FRAME', 'WATERFALL', 'WAVES', 'WINDMILL', 'WINDOW_FRAME', 'WINTER', 'WOOD_FRAMED']])
+
+  df = createDataFrame()
+  ```
 
 """)
 
-st.dataframe(df)
+
+
+# De schilderijen van Bob Ross bevatten heel veel verschillende variabelen. Er zitten bijvoorbeeld veel verschillende kleuren in maar ook een hoop verschillende objecten zoals huizen en bomen. De data set laat veel informatie ook zien over in welke volgorde hij zijn schilderijen heeft gemaakt en in welk seizoen van zijn serie. Met de slider, de checkboxen en het dropdownmenu kan er gefilterd gaan worden op veel verschillende aspecten.
+
 
 st.markdown("---")
 
