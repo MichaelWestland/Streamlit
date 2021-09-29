@@ -48,7 +48,7 @@ st.markdown("# Bob Ross' schilderijen analyse")
 st.caption("Geschreven door Boaz Geelhoed (500825279), Karlijn Huissen (500889478), Michael Westland (500889605) en Tessa Troostheide (500799202) - Groep 8")
 st.caption("Datum: 1 oktober 2021")
 st.image("https://images0.persgroep.net/rcs/QwWUYB6t8dQG7cpgeJiA5R-WCLU/diocontent/70177042/_fitwidth/694/?appId=21791a8992982cd8da851550a453bd7f&quality=0.8")
-# st.markdown('> ' + getQuote() + '\n\r > *- Bob Ross*')
+st.markdown('> ' + getQuote() + '\n\r > *- Bob Ross*')
 st.markdown("""
   ## Inleiding
   Bob Ross (1942 - 1995) was een Amerikaanse landschapschilder die in zijn televisieserie *The Joy of Painting* veel verschillende schilderijen heeft geschilderd. Deze schilderijen zullen in dit rapport geanalyseerd worden op basis van de geschilderde objecten en gebruikte kleuren.
