@@ -323,7 +323,7 @@ with col1:
 with col2:
   episode = st.selectbox('Selecteer schilderij', df[df['season'] == season]['painting_title'])
 
-st.dataframe(df[df['painting_title'] == episode].head())
+st.table(df[df['painting_title'] == episode].head())
 
 # st.subheader(episode)
 # st.caption(df[df['painting_title'] == episode]['season'])
@@ -345,10 +345,20 @@ st.markdown("Het histogram dat te zien is, geeft weer hoeveel schilderijen een b
 
 st.markdown("Hieronder is een staafdiagram te zien. Een staafdiagram is een grafiek met allerlei staven. De lengte van deze staven geeft de frequentie weer. In onderstaande staafdiagram valt te zien hoe vaak elke kleur voorkomt in de schilderijen. Dit is uitgedrukt in percentages. Zo is te zien dat Titanium White het meeste gebruikt is, deze kleur komt namelijk in 99,3% van de schilderijen voor.")
 
-fig = px.bar(df[['Black_Gesso','Bright_Red', 'Burnt_Umber', 'Cadmium_Yellow', 'Dark_Sienna', 'Indian_Red', 'Indian_Yellow', 'Liquid_Black', 'Liquid_Clear', 'Midnight_Black', 'Phthalo_Blue', 'Phthalo_Green', 'Prussian_Blue', 'Sap_Green', 'Titanium_White', 'Van_Dyke_Brown', 'Yellow_Ochre', 'Alizarin_Crimson']].mean(), orientation='h', height=500)
+fig = px.bar(df[['Black_Gesso','Bright_Red', 'Burnt_Umber', 'Cadmium_Yellow', 'Dark_Sienna', 'Indian_Red', 'Indian_Yellow', 'Liquid_Black', 'Liquid_Clear', 'Midnight_Black', 'Phthalo_Blue', 'Phthalo_Green', 'Prussian_Blue', 'Sap_Green', 'Titanium_White', 'Van_Dyke_Brown', 'Yellow_Ochre', 'Alizarin_Crimson']].mean().sort_values()*100, orientation='h', height=500,
+title = 'Voorkomende kleuren in percentages', color_discrete_map = {'0':'rgb(14, 120, 85)'},
+labels = {'value':'Percentage',
+'index' : 'Kleuren'})
+
+fig.update_layout(showlegend=False)
 st.write(fig)
 
 st.markdown("Naast de verschillende kleuren is het ook interessant om te zien hoe vaak elk element in alle schilderijen voorkomt. Dit is weergegeven in de staafdiagram hieronder. Hier is te zien dat in ongeveer 90% van de schilderijen Bob Ross zijn iconische ‘happy little trees’ te zien zijn.")
 
-fig = px.bar(df[['APPLE_FRAME', 'AURORA_BOREALIS', 'BARN', 'BEACH', 'BOAT', 'BRIDGE', 'BUILDING', 'BUSHES', 'CABIN', 'CACTUS', 'CIRCLE_FRAME', 'CIRRUS', 'CLIFF', 'CLOUDS', 'CONIFER', 'CUMULUS', 'DECIDUOUS', 'DIANE_ANDRE', 'DOCK', 'DOUBLE_OVAL_FRAME', 'FARM', 'FENCE', 'FIRE', 'FLORIDA_FRAME', 'FLOWERS', 'FOG', 'FRAMED', 'GRASS', 'GUEST', 'HALF_CIRCLE_FRAME', 'HALF_OVAL_FRAME', 'HILLS', 'LAKE', 'LAKES', 'LIGHTHOUSE', 'MILL', 'MOON', 'MOUNTAIN', 'MOUNTAINS', 'NIGHT', 'OCEAN', 'OVAL_FRAME', 'PALM_TREES', 'PATH', 'PERSON', 'PORTRAIT', 'RECTANGLE_3D_FRAME', 'RECTANGULAR_FRAME', 'RIVER', 'ROCKS', 'SEASHELL_FRAME', 'SNOW', 'SNOWY_MOUNTAIN', 'SPLIT_FRAME', 'STEVE_ROSS', 'STRUCTURE', 'SUN', 'TOMB_FRAME', 'TREE', 'TREES', 'TRIPLE_FRAME', 'WATERFALL', 'WAVES', 'WINDMILL', 'WINDOW_FRAME', 'WINTER', 'WOOD_FRAMED']].mean(), orientation='h', height=1500)
+fig = px.bar(df[['APPLE_FRAME', 'AURORA_BOREALIS', 'BARN', 'BEACH', 'BOAT', 'BRIDGE', 'BUILDING', 'BUSHES', 'CABIN', 'CACTUS', 'CIRCLE_FRAME', 'CIRRUS', 'CLIFF', 'CLOUDS', 'CONIFER', 'CUMULUS', 'DECIDUOUS', 'DIANE_ANDRE', 'DOCK', 'DOUBLE_OVAL_FRAME', 'FARM', 'FENCE', 'FIRE', 'FLORIDA_FRAME', 'FLOWERS', 'FOG', 'FRAMED', 'GRASS', 'GUEST', 'HALF_CIRCLE_FRAME', 'HALF_OVAL_FRAME', 'HILLS', 'LAKE', 'LAKES', 'LIGHTHOUSE', 'MILL', 'MOON', 'MOUNTAIN', 'MOUNTAINS', 'NIGHT', 'OCEAN', 'OVAL_FRAME', 'PALM_TREES', 'PATH', 'PERSON', 'PORTRAIT', 'RECTANGLE_3D_FRAME', 'RECTANGULAR_FRAME', 'RIVER', 'ROCKS', 'SEASHELL_FRAME', 'SNOW', 'SNOWY_MOUNTAIN', 'SPLIT_FRAME', 'STEVE_ROSS', 'STRUCTURE', 'SUN', 'TOMB_FRAME', 'TREE', 'TREES', 'TRIPLE_FRAME', 'WATERFALL', 'WAVES', 'WINDMILL', 'WINDOW_FRAME', 'WINTER', 'WOOD_FRAMED']].mean().sort_values()*100, orientation='h', height=1500,
+title = 'Voorkomende schilderselementen in percentage', color_discrete_map = {'0':'rgb(254, 163, 5)'},
+labels = {'value':'Percentage', 'index':'Elementen'})
+
+fig.update_layout(showlegend=False)
+
 st.write(fig)
